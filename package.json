@@ -1,0 +1,22 @@
+{
+  "name": "nytimes-scraper",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cheerio": "^0.20.0",
+    "express": "^4.13.4",
+    "mongoose": "^4.10.5",
+    "morgan": "^1.8.2",
+    "request": "^2.69.0"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "description": ""
+}
