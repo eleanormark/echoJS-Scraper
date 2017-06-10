@@ -8,10 +8,13 @@ var cheerio = require("cheerio");
 
 // Use in a  GET request to scrape the echojs website
 var scrapeArticles = function(req, res) {
+
+    var countArr = [];
     // First, we grab the body of the html with request
     request("http://www.echojs.com/", function(error, response, html) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(html);
+
         // Now, we grab every h2 within an article tag, and do the following:
         $("article h2").each(function(i, element) {
             // Save an empty result object
@@ -22,7 +25,11 @@ var scrapeArticles = function(req, res) {
             // Using our Article model, create a new entry
             // This effectively passes the result object to the entry (and the title and link)
             var entry = new Article(result);
-            // Now, save that entry to the db
+
+            if (result.title && result.link){
+                countArr.push(entry);
+            }
+            // Now, save that entry to the db            
             entry.save(function(err, doc) {
                 // Log any errors
                 if (err) {
@@ -34,9 +41,11 @@ var scrapeArticles = function(req, res) {
                 }
             });
         });
+           res.json(countArr);
     });
     // Tell the browser that we finished scraping the text
-    res.send("Scrape Complete");
+    // res.send("Scrape Completed.  Number of Article(s): ");
+ 
 }
 
 // Use in getting all the articles we scraped from the mongoDB

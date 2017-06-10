@@ -63,3 +63,33 @@ $(document).on("click", "#savenote", function() {
     $("#titleinput").val("");
     $("#bodyinput").val("");
 });
+
+$("#scrape").on("click", function() {
+    $(".saved-article-panel").css('display','none');
+    // $(".new-article-panel").empty();
+    $.get('/api/scrape', {}, function (result) {
+        console.log("Scraping Results");
+        console.log(result);
+        alert("Scraping completed.  Found " + result.length  + " new article(s)." );
+        $(".new-article-panel").css('display','block');
+        result.forEach(function(element) {
+             $("#articles").prepend("<div><button class='btn'>+</button>&nbsp&nbsp&nbsp<a href=" + element.link + ">" + element.title + "</a></div>");
+            
+        }, this);
+    })
+})
+
+
+$("#saved-articles").on("click", function() {
+    $(".new-article-panel").css('display','none');
+    $(".saved-article-panel").css('display','block');
+    // $.get('/api/articles', {}, function (result) {
+    //     console.log("Scraping Results");
+    //     console.log(result);
+    //     $(".new-article-panel").css('display','none');
+    //     result.forEach(function(element) {
+    //          $("#articles").prepend("<div><button class='btn'>+</button>&nbsp&nbsp&nbsp<a href=" + element.link + ">" + element.title + "</a></div>");
+            
+    //     }, this);
+    // })
+})

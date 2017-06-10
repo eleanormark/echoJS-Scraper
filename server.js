@@ -12,6 +12,8 @@ var Article = require("./models/Article.js");
 var request = require("request");
 var cheerio = require("cheerio");
 
+var exphbs = require("express-handlebars");
+
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
 
@@ -27,8 +29,13 @@ app.use(bodyParser.urlencoded({
 // Make public a static dir
 app.use(express.static("public"));
 
+
+// Set Handlebars.
+// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// app.set("view engine", "handlebars");
+
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/1-nytimes-scrape");
+mongoose.connect("mongodb://localhost/echojs-scrape");
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -46,7 +53,7 @@ var  apiRoutes = require("./routes/api.js")
 app.use("/api", apiRoutes);
 
 
-// Listen on port 3000
-app.listen(3000, function() {
-    console.log("App running on port 3000!");
+// Listen on port 8000
+app.listen(8000, function() {
+    console.log("App running on port 8000!");
 });

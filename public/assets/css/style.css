@@ -1,0 +1,94 @@
+body  {
+    background: url('/assets/img/map.jpg') no-repeat left fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.navbar a {
+    color: white;
+}
+
+.nav a:hover, .nav a:focus {
+    background-color:transparent !important;
+}
+
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus,
+.btn:active:focus, .btn:focus  {
+  outline: none;
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.new-article-panel {
+    display: none;
+}
+
+.panel-default {
+    background: rgba(0, 35, 102, 0.7)!important;
+    color: white;
+}
+
+.panel-default a {
+    background: rgba(0, 35, 102, 0.7)!important;
+    color: white;
+}
+
+.panel-heading {
+    font-weight: bold;
+    color: white !important;
+    background: rgba(0, 35, 102, 0.7)!important;
+}
+
+#articles .btn {
+    border: solid white 1px;
+    background: rgba(204, 204, 204, 0.2)!important;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#articles .btn:hover, #articles .btn:active, #articles .btn:focus {
+    color: white !important;
+    border: solid white 1px !important;
+    outline: none!important;
+    -webkit-box-shadow: none;
+}
+
+#articles div {
+    border-bottom: gray solid 1px;
+}
+/*.container {
+    color: white;
+}
+#wrapper {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5%;
+}
+#articles {
+    display: inline-block;
+    overflow: auto;
+    width: 60%;
+    height: 700px;
+}
+#notes {
+    float: right;
+    width: 30%;
+}
+textarea, input {
+    display: block;
+    width: 100%;
+    background-color: #FCF5C7;
+}
+input {
+    height: 36px;
+    font-size: 24px;
+}
+textarea {
+    height: 200px;
+    font-size: 18px;
+}*/
