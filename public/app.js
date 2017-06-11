@@ -73,7 +73,19 @@ $("#scrape").on("click", function() {
         alert("Scraping completed.  Found " + result.length  + " new article(s)." );
         $(".new-article-panel").css('display','block');
         result.forEach(function(element) {
-             $("#articles").prepend("<div><button class='btn'>+</button>&nbsp&nbsp&nbsp<a href=" + element.link + ">" + element.title + "</a></div>");
+
+            var $a = $('<a/>', {
+                "target" : "_blank",
+                "href" : element.link,
+                "text" : element.title
+            });
+
+            var $button = $('<button/>', {
+                    text: '+',
+                    class: 'btn'
+                });
+    
+             $("#articles").prepend("<div>" + $button.get(0).outerHTML + "&nbsp&nbsp&nbsp" + $a.get(0).outerHTML + "</div>");
             
         }, this);
     })
@@ -89,7 +101,7 @@ $("#saved-articles").on("click", function() {
     //     $(".new-article-panel").css('display','none');
     //     result.forEach(function(element) {
     //          $("#articles").prepend("<div><button class='btn'>+</button>&nbsp&nbsp&nbsp<a href=" + element.link + ">" + element.title + "</a></div>");
-            
+      
     //     }, this);
     // })
 })

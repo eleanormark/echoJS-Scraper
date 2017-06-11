@@ -9,7 +9,7 @@ var cheerio = require("cheerio");
 // Use in a  GET request to scrape the echojs website
 var scrapeArticles = function(req, res) {
 
-    var countArr = [];
+    var scrapedArticles = [];
     // First, we grab the body of the html with request
     request("http://www.echojs.com/", function(error, response, html) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
@@ -27,7 +27,7 @@ var scrapeArticles = function(req, res) {
             var entry = new Article(result);
 
             if (result.title && result.link){
-                countArr.push(entry);
+                scrapedArticles.push(entry);
             }
             // Now, save that entry to the db            
             entry.save(function(err, doc) {
@@ -41,7 +41,7 @@ var scrapeArticles = function(req, res) {
                 }
             });
         });
-           res.json(countArr);
+           res.json(scrapedArticles);
     });
     // Tell the browser that we finished scraping the text
     // res.send("Scrape Completed.  Number of Article(s): ");

@@ -27,6 +27,10 @@ body  {
     display: none;
 }
 
+.saved-article-panel {
+    display: none;
+}
+
 .panel-default {
     background: rgba(0, 35, 102, 0.7)!important;
     color: white;
@@ -46,8 +50,8 @@ body  {
 #articles .btn {
     border: solid white 1px;
     background: rgba(204, 204, 204, 0.2)!important;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #articles .btn:hover, #articles .btn:active, #articles .btn:focus {
@@ -57,7 +61,7 @@ body  {
     -webkit-box-shadow: none;
 }
 
-#articles div {
+#articles div{
     border-bottom: gray solid 1px;
 }
 /*.container {
