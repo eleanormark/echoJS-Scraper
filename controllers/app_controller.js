@@ -30,22 +30,46 @@ var scrapeArticles = function(req, res) {
                 scrapedArticles.push(entry);
             }
             // Now, save that entry to the db            
-            entry.save(function(err, doc) {
-                // Log any errors
-                if (err) {
-                    console.log(err);
-                }
-                // Or log the doc
-                else {
-                    console.log(doc);
-                }
-            });
+            // entry.save(function(err, doc) {
+            //     // Log any errors
+            //     if (err) {
+            //         console.log(err);
+            //     }
+            //     // Or log the doc
+            //     else {
+            //         console.log(doc);
+            //     }
+            // });
         });
            res.json(scrapedArticles);
     });
     // Tell the browser that we finished scraping the text
     // res.send("Scrape Completed.  Number of Article(s): ");
- 
+} 
+
+var postNewArticle = function(req, res) {
+
+    // Save an empty result object
+    var result = {};
+    // Add the text and href of every link, and save them as properties of the result object
+    result.title = req.body.title;
+    result.link = req.body.link;
+
+    // if (res.title && res.link) {
+    //     scrapedArticles.push(entry);
+    // }
+    var entry = new Article(result);    
+        entry.save(function(err, doc) {
+        // Log any errors
+        if (err) {
+            console.log(err);
+        }
+        // Or log the doc
+        else {
+            console.log(doc);
+        }
+    });
+
 }
 
 // Use in getting all the articles we scraped from the mongoDB
@@ -90,6 +114,7 @@ var postNewComment = function(req, res) {
     newNote.save(function(error, doc) {
         // Log any errors
         if (error) {
+            console.lgo("post error")
             console.log(error);
         }
         // Otherwise
@@ -116,6 +141,7 @@ module.exports = {
     getAllArticles:  getAllArticles,
     getArticle: getArticle,
     // deleteArticle,
+    postNewArticle: postNewArticle,
     postNewComment: postNewComment
     // deleteComment
 }

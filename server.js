@@ -35,7 +35,7 @@ app.use(express.static("public"));
 // app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/echojs-scrape");
+mongoose.connect("mongodb://localhost/echojsdb");
 var db = mongoose.connection;
 
 // Show any mongoose errors

@@ -8,6 +8,7 @@ router.get("/scrape", controller.scrapeArticles)        // A GET request to scra
     .get('/articles', controller.getAllArticles)        // This will get the articles we scraped from the mongoDB
     .get("/articles/:id", controller.getArticle)        // Grab an article by it's ObjectId
     // .delete("/articles/:id", controller.deleteArticle)
+    .post('/newArticle', controller.postNewArticle)         // Grab new article without id
     .post('/articles/:id"', controller.postNewComment)      // Create a new note or replace an existing note
     // .delete('/articles/:id"', controller.deleteComment)
 

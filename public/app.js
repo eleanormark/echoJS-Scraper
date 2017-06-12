@@ -72,6 +72,7 @@ $("#scrape").on("click", function() {
         console.log(result);
         alert("Scraping completed.  Found " + result.length  + " new article(s)." );
         $(".new-article-panel").css('display','block');
+
         result.forEach(function(element) {
 
             var $a = $('<a/>', {
@@ -91,6 +92,25 @@ $("#scrape").on("click", function() {
     })
 })
 
+$(document).on("click", ".new-article-panel .btn", function() {
+
+    $.ajax({
+        method: "POST",
+        url: "/api/newArticle",
+        data: {
+            // Value taken from title input
+            title: $(this).next("a").text(),
+            // Value taken from note textarea
+            link: $(this).next("a").attr("href")
+        }
+    })
+        .done(function(data) {
+            // Log the response
+            console.log(data);
+            // Empty the notes section
+        });
+    $(this).closest('div').remove();
+})
 
 $("#saved-articles").on("click", function() {
     $(".new-article-panel").css('display','none');
@@ -104,4 +124,20 @@ $("#saved-articles").on("click", function() {
       
     //     }, this);
     // })
+
+    // <div class="container">
+    //     <div class="panel-group">
+    //         <div class="panel panel-default">
+    //         <div class="panel-heading">
+    //             <h4 class="panel-title">
+    //             <a data-toggle="collapse" href="#collapse1">Collapsible panel</a>
+    //             </h4>
+    //         </div>
+    //         <div id="collapse1" class="panel-collapse collapse">
+    //             <div class="panel-body">Panel Body</div>
+    //             <div class="panel-footer">Panel Footer</div>
+    //         </div>
+    //         </div>
+    //     </div>
+    // </div>
 })
