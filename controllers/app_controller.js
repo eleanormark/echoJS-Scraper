@@ -55,9 +55,9 @@ var postNewArticle = function(req, res) {
     result.title = req.body.title;
     result.link = req.body.link;
 
-    // if (res.title && res.link) {
-    //     scrapedArticles.push(entry);
-    // }
+    if (res.title && res.link) {
+        scrapedArticles.push(entry);
+    }
     var entry = new Article(result);    
         entry.save(function(err, doc) {
         // Log any errors
@@ -85,6 +85,18 @@ var getAllArticles = function(req, res) {
             res.json(doc);
         }
     });
+}
+
+// delete an article
+var deleteArticle = function(req, res) {
+    var id = req.body.articleId;
+    console.log("id is>>>>", id);
+
+    Article.deleteOne({ "_id": id}, function(err, result) {
+    console.log("Deleted article " + id)
+    console.log(JSON.parse(result))
+    res.json(result)
+  })
 }
 
 // Grab an article by it's ObjectId
@@ -140,7 +152,7 @@ module.exports = {
     scrapeArticles: scrapeArticles,
     getAllArticles:  getAllArticles,
     getArticle: getArticle,
-    // deleteArticle,
+    deleteArticle: deleteArticle,
     postNewArticle: postNewArticle,
     postNewComment: postNewComment
     // deleteComment

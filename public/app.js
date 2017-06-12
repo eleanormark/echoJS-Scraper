@@ -124,14 +124,13 @@ $(document).on("click", "#saved-articles",function() {
         console.log(result);
         $(".new-article-panel").css('display','none');
         result.forEach(function(element, index) {
-            
             var queue = '<div class="panel-group">';
             queue += '<div class="panel panel-default">';
             queue += '<div class="panel-heading">';
             queue += '<h4 class="panel-title">';
-            queue += '<a data-toggle="collapse" href="#collapse'+index+'">&#9661;</a>';
+            queue += '<a class="delete-saved-article" data-article-id="'+ element._id +'">&#x24e7</a>';
             queue += "&nbsp&nbsp&nbsp" ;
-            queue += '&#x24e7';
+            queue += '<a data-toggle="collapse" href="#collapse'+index+'">&#9661;</a>';
             queue += "&nbsp&nbsp&nbsp" ;
             queue += '<a href="' + element.link + '">"' + element.title + '"</a>';
             queue += '</h4>';
@@ -144,9 +143,23 @@ $(document).on("click", "#saved-articles",function() {
             queue += '</div>'
             $("#saved-articles-panel-body").prepend(queue);
         }, this);
-    })    
+    }) 
+
 })
 
+//delete saved article pannel 
+$(document).on("click", ".delete-saved-article",function() {
+    var articleId = $(this).data("article-id");
 
-
-
+    var article = { articleId: articleId }
+    console.log("================================");
+    console.log(article);
+    $.ajax({
+      url: '/api/article',
+      type: 'DELETE',
+      data: article
+    }).then(function(response) {
+      console.log(response)
+    })
+    $(this).parent().parent().parent().parent().remove();
+})
