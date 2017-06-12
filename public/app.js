@@ -116,16 +116,37 @@ $(document).on("click", ".new-article-panel .btn", function() {
 })
 
 //show saved article pannel 
-$("#saved-articles").on("click", function() {
+$(document).on("click", "#saved-articles",function() {
     $(".new-article-panel").css('display','none');
     $(".saved-article-panel").css('display','block');
     $.get('/api/articles', {}, function (result) {
         console.log("Scraping Results");
         console.log(result);
         $(".new-article-panel").css('display','none');
-        result.forEach(function(element) {
-            $("#saved-articles").prepend("<div><button class='btn'>comment</button>&nbsp&nbsp&nbsp<a href=" + element.link + ">" + element.title + "</a></div>");
-      
+        result.forEach(function(element, index) {
+            
+            var queue = '<div class="panel-group">';
+            queue += '<div class="panel panel-default">';
+            queue += '<div class="panel-heading">';
+            queue += '<h4 class="panel-title">';
+            queue += '<a data-toggle="collapse" href="#collapse'+index+'">&#9661;</a>';
+            queue += "&nbsp&nbsp&nbsp" ;
+            queue += '&#x24e7';
+            queue += "&nbsp&nbsp&nbsp" ;
+            queue += '<a href="' + element.link + '">"' + element.title + '"</a>';
+            queue += '</h4>';
+            queue += '</div>';
+            queue += '<div id="collapse'+index+'" class="panel-collapse collapse">'
+            queue += '<div class="panel-body">Panel Body</div>'
+            queue += '<div class="panel-footer">Panel Footer</div>'
+            queue += '</div>'
+            queue += '</div>'
+            queue += '</div>'
+            $("#saved-articles-panel-body").prepend(queue);
         }, this);
     })    
 })
+
+
+
+
