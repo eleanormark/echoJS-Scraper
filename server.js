@@ -31,8 +31,8 @@ app.use(express.static("public"));
 
 
 // Set Handlebars.
-// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-// app.set("view engine", "handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
 mongoose.connect("mongodb://localhost/echojsdb");
@@ -51,6 +51,8 @@ db.once("open", function() {
 // Routes
 var  apiRoutes = require("./routes/api.js")
 app.use("/api", apiRoutes);
+var  viewRoutes = require("./routes/view.js")
+app.use("/", viewRoutes)
 
 
 // Listen on port 8000

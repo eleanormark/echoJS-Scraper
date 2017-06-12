@@ -64,6 +64,7 @@ $(document).on("click", "#savenote", function() {
     $("#bodyinput").val("");
 });
 
+//start scrape
 $("#scrape").on("click", function() {
     $(".saved-article-panel").css('display','none');
     // $(".new-article-panel").empty();
@@ -92,6 +93,7 @@ $("#scrape").on("click", function() {
     })
 })
 
+//Save article button
 $(document).on("click", ".new-article-panel .btn", function() {
 
     $.ajax({
@@ -109,35 +111,21 @@ $(document).on("click", ".new-article-panel .btn", function() {
             console.log(data);
             // Empty the notes section
         });
-    $(this).closest('div').remove();
+    $(this).parent().remove();
+
 })
 
+//show saved article pannel 
 $("#saved-articles").on("click", function() {
     $(".new-article-panel").css('display','none');
     $(".saved-article-panel").css('display','block');
-    // $.get('/api/articles', {}, function (result) {
-    //     console.log("Scraping Results");
-    //     console.log(result);
-    //     $(".new-article-panel").css('display','none');
-    //     result.forEach(function(element) {
-    //          $("#articles").prepend("<div><button class='btn'>+</button>&nbsp&nbsp&nbsp<a href=" + element.link + ">" + element.title + "</a></div>");
+    $.get('/api/articles', {}, function (result) {
+        console.log("Scraping Results");
+        console.log(result);
+        $(".new-article-panel").css('display','none');
+        result.forEach(function(element) {
+            $("#saved-articles").prepend("<div><button class='btn'>comment</button>&nbsp&nbsp&nbsp<a href=" + element.link + ">" + element.title + "</a></div>");
       
-    //     }, this);
-    // })
-
-    // <div class="container">
-    //     <div class="panel-group">
-    //         <div class="panel panel-default">
-    //         <div class="panel-heading">
-    //             <h4 class="panel-title">
-    //             <a data-toggle="collapse" href="#collapse1">Collapsible panel</a>
-    //             </h4>
-    //         </div>
-    //         <div id="collapse1" class="panel-collapse collapse">
-    //             <div class="panel-body">Panel Body</div>
-    //             <div class="panel-footer">Panel Footer</div>
-    //         </div>
-    //         </div>
-    //     </div>
-    // </div>
+        }, this);
+    })    
 })
