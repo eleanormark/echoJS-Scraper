@@ -14,10 +14,14 @@ var ArticleSchema = new Schema({
         type: String,
         required: true
     },
+    timestamp: {
+        type: Date,
+        default: Date.now
+    },
     comments: [{
-    type: Schema.ObjectId,
-    ref: 'Comment'
-  }]
+        type: Schema.ObjectId,
+        ref: 'Comment'
+    }]
 });
 // Create the Article model with the ArticleSchema
 var Article = mongoose.model("Article", ArticleSchema);

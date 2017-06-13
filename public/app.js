@@ -131,19 +131,21 @@ $(document).on("click", "#saved-articles",function() {
             queue += '<h4 class="panel-title">';
             queue += '<a class="delete-saved-article" data-article-id="'+ element._id +'">&#x24e7</a>';
             queue += "&nbsp&nbsp&nbsp" ;
-            queue += '<a data-toggle="collapse" href="#collapse'+index+'">&#9661;</a>';
+            queue += '<a data-toggle="collapse" href="#collapse'+element._id +'">&#9661;</a>';
             queue += "&nbsp&nbsp&nbsp" ;
             queue += '<a href="' + element.link + '">"' + element.title + '"</a>';
             queue += '</h4>';
             queue += '</div>';
-            queue += '<div id="collapse'+index+'" class="panel-collapse collapse">'
+            queue += '<div id="collapse'+ element._id +'" class="panel-collapse collapse">'
             queue += '<div class="panel-body">'
             queue += '<div class="form-group">'
             queue += '<label for="comment">New Comment:</label>'
-            queue += '<textarea class="form-control" rows="5" id="comment"></textarea>'
+            queue += '<textarea class="form-control" rows="5" id="comment-area'+ element._id +'"></textarea>'
             queue += '</div>'
             queue += '</div>'
-            queue += '<div class="panel-footer"><button type="button" class="btn btn-warning save-comment">Save Comment</button></div>'
+            queue += '<div class="panel-footer">'
+            queue += '<button type="button" class="btn btn-warning save-comment" data-article-id="'+ element._id +'">'
+            queeu += 'Save Comment</button></div>'
             queue += '</div>'
             queue += '</div>'
             queue += '</div>'
@@ -157,8 +159,8 @@ $(document).on("click", "#saved-articles",function() {
 $(document).on("click", ".delete-saved-article",function() {
     var articleId = $(this).data("article-id");
 
-    var article = { articleId: articleId }
-    console.log("================================");
+    var article = { articleId: articleId };
+
     console.log(article);
     $.ajax({
       url: '/api/article',
@@ -168,4 +170,23 @@ $(document).on("click", ".delete-saved-article",function() {
       console.log(response)
     })
     $(this).parent().parent().parent().parent().remove();
+})
+
+//save new comment
+$(document).on("click", ".save-comment",function() {
+    var articleId = $(this).data("article-id");
+    var textFieldId = "#comment-area" + articleId;
+    var commentText = $(textFieldId ).val();
+    var savedComment = {};
+    savedComment['_article'] = articleId;
+    savedComment['comments'] = commentText
+
+    $.ajax({
+      url: '/api/comment',
+      type: 'POST',
+      data: savedComment 
+    }).then(function(response) {
+      console.log(response)
+    })
+    $(textFieldId ).val('');
 })
