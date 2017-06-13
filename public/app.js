@@ -119,6 +119,7 @@ $(document).on("click", ".new-article-panel .btn", function() {
 $(document).on("click", "#saved-articles",function() {
     $(".new-article-panel").css('display','none');
     $(".saved-article-panel").css('display','block');
+     $(".saved-article-panel .panel-group").empty();
     $.get('/api/articles', {}, function (result) {
         console.log("Scraping Results");
         console.log(result);
@@ -136,8 +137,13 @@ $(document).on("click", "#saved-articles",function() {
             queue += '</h4>';
             queue += '</div>';
             queue += '<div id="collapse'+index+'" class="panel-collapse collapse">'
-            queue += '<div class="panel-body">Panel Body</div>'
-            queue += '<div class="panel-footer">Panel Footer</div>'
+            queue += '<div class="panel-body">'
+            queue += '<div class="form-group">'
+            queue += '<label for="comment">New Comment:</label>'
+            queue += '<textarea class="form-control" rows="5" id="comment"></textarea>'
+            queue += '</div>'
+            queue += '</div>'
+            queue += '<div class="panel-footer"><button type="button" class="btn btn-warning save-comment">Save Comment</button></div>'
             queue += '</div>'
             queue += '</div>'
             queue += '</div>'

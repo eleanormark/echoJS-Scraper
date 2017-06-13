@@ -5,7 +5,7 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 
 // Requiring our Note and Article models
-var Note = require("./models/Note.js");
+var Note = require("./models/Comment.js");
 var Article = require("./models/Article.js");
 
 // Our scraping tools
@@ -29,7 +29,6 @@ app.use(bodyParser.urlencoded({
 // Make public a static dir
 app.use(express.static("public"));
 
-
 // Set Handlebars.
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
@@ -52,8 +51,7 @@ db.once("open", function() {
 var  apiRoutes = require("./routes/api.js")
 app.use("/api", apiRoutes);
 var  viewRoutes = require("./routes/view.js")
-app.use("/", viewRoutes)
-
+app.use("/", viewRoutes);
 
 // Listen on port 8000
 app.listen(8000, function() {

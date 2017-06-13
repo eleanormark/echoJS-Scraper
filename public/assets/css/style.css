@@ -64,6 +64,10 @@ body  {
 #articles div{
     border-bottom: gray solid 1px;
 }
+
+.panel-footer {
+    background-color: transparent !important;
+}
 /*.container {
     color: white;
 }
