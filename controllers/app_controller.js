@@ -57,7 +57,7 @@ var postNewArticle = function(req, res) {
     result.title = req.body.title;
     result.link = req.body.link;
 
-    
+
     var entry = new Article(result);    
         entry.save(function(err, doc) {
         // Log any errors
@@ -93,9 +93,9 @@ var deleteArticle = function(req, res) {
     console.log("id is>>>>", id);
 
     Article.deleteOne({ "_id": id}, function(err, result) {
-    console.log("Deleted article " + id)
-    console.log(JSON.parse(result))
-    res.json(result)
+    console.log("Deleted article " + id);
+    console.log(JSON.parse(result));
+    res.json(result);
   })
 }
 
@@ -123,14 +123,14 @@ var postNewComment = function(req, res) {
     // Create a new comment and pass the req.body to the entry
     var newComment = new Comment(req.body);
 
-    var articleId = req.body['_article']
-    console.log("article =================")
+    var articleId = req.body['_article'];
+    console.log("article =================");
     console.log(articleId);
     // And save the new comment the db
     newComment.save(function(error, doc) {
         // Log any errors
         if (error) {
-            console.lgo("post error")
+            console.lgo("post error");
             console.log(error);
         }
         // Otherwise
@@ -138,10 +138,10 @@ var postNewComment = function(req, res) {
             // Use the article id to find and update it's comment
             Article.update({ "_id": articleId  }, {$push: { "comments": newComment._id }}, function(err, result){
                 if(err) {
-                console.log(err)
-                console.log("err at comment arr==================")
+                console.log(err);
+                console.log("err at comment arr==================");
                 }else {
-                    res.json(newComment)
+                    res.json(newComment);
                     console.log("not showing error");
                     console.log(newComment);
                 }})
@@ -178,9 +178,9 @@ var  getComments = function (req, res) {
 
 var deleteComment = function (req, res) {
     Comment.deleteOne({ "_id": req.body.commentId}, function (err, result) {
-    console.log("Deleted comment " + req.body.commentId)
-    console.log(JSON.parse(result))
-    res.json(result)
+        console.log("Deleted comment " + req.body.commentId);
+        console.log(JSON.parse(result));
+        res.json(result);
     })
 }
 

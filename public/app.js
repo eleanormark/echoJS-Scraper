@@ -1,69 +1,3 @@
-// Grab the articles as a json
-$.getJSON("/articles", function(data) {
-    // For each one
-    for (var i = 0; i < data.length; i++) {
-        // Display the apropos information on the page
-        $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
-    }
-});
-// Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
-    // Empty the notes from the note section
-    $("#notes").empty();
-    // Save the id from the p tag
-    var thisId = $(this).attr("data-id");
-    // Now make an ajax call for the Article
-    $.ajax({
-        method: "GET",
-        url: "/articles/" + thisId
-    })
-    // With that done, add the note information to the page
-        .done(function(data) {
-            console.log(data);
-            // The title of the article
-            $("#notes").append("<h2>" + data.title + "</h2>");
-            // An input to enter a new title
-            $("#notes").append("<input id='titleinput' name='title' >");
-            // A textarea to add a new note body
-            $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-            // A button to submit a new note, with the id of the article saved to it
-            $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
-            // If there's a note in the article
-            if (data.note) {
-                // Place the title of the note in the title input
-                $("#titleinput").val(data.note.title);
-                // Place the body of the note in the body textarea
-                $("#bodyinput").val(data.note.body);
-            }
-        });
-});
-// When you click the savenote button
-$(document).on("click", "#savenote", function() {
-    // Grab the id associated with the article from the submit button
-    var thisId = $(this).attr("data-id");
-    // Run a POST request to change the note, using what's entered in the inputs
-    $.ajax({
-        method: "POST",
-        url: "/articles/" + thisId,
-        data: {
-            // Value taken from title input
-            title: $("#titleinput").val(),
-            // Value taken from note textarea
-            body: $("#bodyinput").val()
-        }
-    })
-    // With that done
-        .done(function(data) {
-            // Log the response
-            console.log(data);
-            // Empty the notes section
-            $("#notes").empty();
-        });
-    // Also, remove the values entered in the input and textarea for note entry
-    $("#titleinput").val("");
-    $("#bodyinput").val("");
-});
-
 //start scrape
 $("#scrape").on("click", function() {
     $(".saved-article-panel").css('display','none');
@@ -117,16 +51,17 @@ $(document).on("click", ".new-article-panel .btn", function() {
 
 //show saved article pannel 
 $(document).on("click", "#saved-articles",function() {
-    $(".new-article-panel").css('display','none');
     $(".saved-article-panel").css('display','block');
-     $(".saved-article-panel .panel-group").empty();
+    $(".new-article-panel").css('display','none');
+    $('.custome-saved-panel').remove();
 
     $.get('/api/articles', {}, function (result) {
         console.log("Scraping Results");
         console.log(result);
         $(".new-article-panel").css('display','none');
+        $('.custome-saved-panel').remove();
         result.forEach(function(element) {
-            var queue = '<div class="panel-group">';
+            var queue = '<div class="custome-saved-panel panel-group">';
             queue += '<div class="panel panel-default">';
             queue += '<div class="panel-heading">';
             queue += '<h4 class="panel-title">';
@@ -159,7 +94,6 @@ $(document).on("click", "#saved-articles",function() {
 //delete saved article pannel 
 $(document).on("click", ".delete-saved-article",function() {
     var articleId = $(this).data("article-id");
-
     var article = { articleId: articleId };
 
     console.log(article);
@@ -188,12 +122,14 @@ $(document).on("click", ".save-comment",function() {
       type: 'POST',
       data: savedComment 
     }).then(function(response) {
-      console.log(response)
-    var queue = '<div class="row saved-comment">'
+        console.log(response)
+        var queue = '<div class="row saved-comment">'
         queue += '<div class="col-xs-10">'+ response.comment + '</div>'
-            queue += '<div class="col-xs-2"><button data-comment-id='+ response._id+'class="btn delete-text">x</button></div>'
+        queue += '<div class="col-xs-2">'
+        queue += '<button class="btn delete-comment" data-comment-id="' + response._id +'">'
+        queue += 'x</button></div>'
         queue += '</div>'
-    $(prependLoc).prepend(queue);
+        $(prependLoc).prepend(queue);
     })
     $(textFieldId ).val('');
 
@@ -213,10 +149,28 @@ $(document).on("click", ".custome-collapse",function() {
         response.comments.forEach(function(element){
             var queue = '<div class="row saved-comment">'
             queue += '<div class="col-xs-10">'+ element.comment+ '</div>'
-            queue += '<div class="col-xs-2"><button data-comment-id='+element._id+'class="btn delete-text">x</button></div>'
+            queue += '<div class="col-xs-2">'
+            queue += '<button class="btn delete-comment" data-comment-id="' + element._id +'">'
+            queue += 'x</button></div>'
             queue += '</div>'
             $(prependLoc).prepend(queue);
         });
     })
 
+})
+
+//delete saved article pannel 
+$(document).on("click", ".delete-comment",function() {
+    var commentId = $(this).data("comment-id");
+    var comment = { commentId: commentId };
+    console.log(comment);
+
+    $.ajax({
+      url: '/api/comment',
+      type: 'DELETE',
+      data: comment
+    }).then(function(response) {
+      console.log(response);
+    })
+    $(this).parent().parent().remove();
 })
