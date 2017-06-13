@@ -6,10 +6,10 @@ var router = new express.Router();
 
 router.get("/scrape", controller.scrapeArticles)        // A GET request to scrape the echojs website
     .get('/articles', controller.getAllArticles)        // This will get the articles we scraped from the mongoDB
-    .get("/articles/:id", controller.getArticle)        // Grab an article by it's ObjectId
+    .get("/articles/:id", controller.getComments)        // Grab an article by it's ObjectId
     .delete("/article", controller.deleteArticle)
     .post('/newArticle', controller.postNewArticle)         // Grab new article without id
-    .post('/articles/:id"', controller.postNewComment)      // Create a new note or replace an existing note
+    .post('/comment', controller.postNewComment)      // Create a new note or replace an existing note
     // .delete('/articles/:id"', controller.deleteComment)
 
 module.exports = router;

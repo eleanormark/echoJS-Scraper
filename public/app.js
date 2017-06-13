@@ -120,18 +120,19 @@ $(document).on("click", "#saved-articles",function() {
     $(".new-article-panel").css('display','none');
     $(".saved-article-panel").css('display','block');
      $(".saved-article-panel .panel-group").empty();
+
     $.get('/api/articles', {}, function (result) {
         console.log("Scraping Results");
         console.log(result);
         $(".new-article-panel").css('display','none');
-        result.forEach(function(element, index) {
+        result.forEach(function(element) {
             var queue = '<div class="panel-group">';
             queue += '<div class="panel panel-default">';
             queue += '<div class="panel-heading">';
             queue += '<h4 class="panel-title">';
             queue += '<a class="delete-saved-article" data-article-id="'+ element._id +'">&#x24e7</a>';
             queue += "&nbsp&nbsp&nbsp" ;
-            queue += '<a data-toggle="collapse" href="#collapse'+element._id +'">&#9661;</a>';
+            queue += '<a class="custome-collapse" data-toggle="collapse" data-toggle-article-id='+element._id +' href="#collapse'+element._id +'">&#9661;</a>';
             queue += "&nbsp&nbsp&nbsp" ;
             queue += '<a href="' + element.link + '">"' + element.title + '"</a>';
             queue += '</h4>';
@@ -145,7 +146,7 @@ $(document).on("click", "#saved-articles",function() {
             queue += '</div>'
             queue += '<div class="panel-footer">'
             queue += '<button type="button" class="btn btn-warning save-comment" data-article-id="'+ element._id +'">'
-            queeu += 'Save Comment</button></div>'
+            queue += 'Save Comment</button></div>'
             queue += '</div>'
             queue += '</div>'
             queue += '</div>'
@@ -177,9 +178,10 @@ $(document).on("click", ".save-comment",function() {
     var articleId = $(this).data("article-id");
     var textFieldId = "#comment-area" + articleId;
     var commentText = $(textFieldId ).val();
+    var prependLoc = "#collapse" + articleId + " .panel-body";
     var savedComment = {};
     savedComment['_article'] = articleId;
-    savedComment['comments'] = commentText
+    savedComment['comment'] = commentText;
 
     $.ajax({
       url: '/api/comment',
@@ -187,6 +189,34 @@ $(document).on("click", ".save-comment",function() {
       data: savedComment 
     }).then(function(response) {
       console.log(response)
+    var queue = '<div class="row saved-comment">'
+        queue += '<div class="col-xs-10">'+ response.comment + '</div>'
+            queue += '<div class="col-xs-2"><button data-comment-id='+ response._id+'class="btn delete-text">x</button></div>'
+        queue += '</div>'
+    $(prependLoc).prepend(queue);
     })
     $(textFieldId ).val('');
+
+
+})
+
+//show comments
+$(document).on("click", ".custome-collapse",function() {
+    var id = $(this).data("toggle-article-id");
+    var prependLoc = "#collapse" + id + " .panel-body";
+
+    $.ajax({
+      url: '/api/articles/' + id,
+      method: 'GET'
+    }).then(function(response) {
+        $('.row.saved-comment').remove();
+        response.comments.forEach(function(element){
+            var queue = '<div class="row saved-comment">'
+            queue += '<div class="col-xs-10">'+ element.comment+ '</div>'
+            queue += '<div class="col-xs-2"><button data-comment-id='+element._id+'class="btn delete-text">x</button></div>'
+            queue += '</div>'
+            $(prependLoc).prepend(queue);
+        });
+    })
+
 })

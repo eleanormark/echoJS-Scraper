@@ -6,6 +6,8 @@ var Article = require("../models/Article.js");
 var request = require("request");
 var cheerio = require("cheerio");
 
+var Promise = require('bluebird');
+
 // Use in a  GET request to scrape the echojs website
 var scrapeArticles = function(req, res) {
 
@@ -55,9 +57,7 @@ var postNewArticle = function(req, res) {
     result.title = req.body.title;
     result.link = req.body.link;
 
-    if (res.title && res.link) {
-        scrapedArticles.push(entry);
-    }
+    
     var entry = new Article(result);    
         entry.save(function(err, doc) {
         // Log any errors
@@ -104,7 +104,7 @@ var  getArticle = function(req, res) {
     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
     Article.findOne({ "_id": req.params.id })
     // ..and populate all of the notes associated with it
-        .populate("note")
+        .populate("comment")
         // now, execute our query
         .exec(function(error, doc) {
             // Log any errors
@@ -120,10 +120,14 @@ var  getArticle = function(req, res) {
 
 // Use for creating a new note or replace an existing note
 var postNewComment = function(req, res) {
-    // Create a new note and pass the req.body to the entry
-    var newNote = new Note(req.body);
-    // And save the new note the db
-    newNote.save(function(error, doc) {
+    // Create a new comment and pass the req.body to the entry
+    var newComment = new Comment(req.body);
+
+    var articleId = req.body['_article']
+    console.log("article =================")
+    console.log(articleId);
+    // And save the new comment the db
+    newComment.save(function(error, doc) {
         // Log any errors
         if (error) {
             console.lgo("post error")
@@ -131,21 +135,53 @@ var postNewComment = function(req, res) {
         }
         // Otherwise
         else {
-            // Use the article id to find and update it's note
-            Article.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
-            // Execute the above query
-                .exec(function(err, doc) {
-                    // Log any errors
-                    if (err) {
-                        console.log(err);
-                    }
-                    else {
-                        // Or send the document to the browser
-                        res.send(doc);
-                    }
-                });
+            // Use the article id to find and update it's comment
+            Article.update({ "_id": articleId  }, {$push: { "comments": newComment._id }}, function(err, result){
+                if(err) {
+                console.log(err)
+                console.log("err at comment arr==================")
+                }else {
+                    res.json(newComment)
+                    console.log("not showing error");
+                    console.log(newComment);
+                }})
         }
     });
+}
+
+// var getComments = function(req, res) {  
+//        console.log("====================get comments")
+//     var id = req.params.id;
+ 
+//     Article.findOne({_id: id}).populate('comments').exec(function (err, doc) {
+//         if (err) {
+//             console.log(err)
+//         } else {
+//         res.json(doc)
+//         }
+//     })
+// }
+
+// get a specific article, with related comments 
+var  getComments = function (req, res) {
+  var id = req.params.id;
+  Promise.resolve(Article.findOne({_id: id}).populate('comments').exec())
+  .then(function(doc) {
+    console.log("==================================found article is >>>>", doc);
+    res.json(doc);
+  })
+  .catch(function (err) {
+    console.log(`===============================error geting that specific article, ${err}`);
+    res.end(404);
+  })
+}
+
+var deleteComment = function (req, res) {
+    Comment.deleteOne({ "_id": req.body.commentId}, function (err, result) {
+    console.log("Deleted comment " + req.body.commentId)
+    console.log(JSON.parse(result))
+    res.json(result)
+    })
 }
 
 module.exports = {
@@ -154,6 +190,7 @@ module.exports = {
     getArticle: getArticle,
     deleteArticle: deleteArticle,
     postNewArticle: postNewArticle,
-    postNewComment: postNewComment
-    // deleteComment
+    postNewComment: postNewComment,
+    getComments: getComments,
+    deleteComment: deleteComment
 }

@@ -68,6 +68,10 @@ body  {
 .panel-footer {
     background-color: transparent !important;
 }
+
+.saved-comment {
+    margin-bottom: 20px;
+}
 /*.container {
     color: white;
 }

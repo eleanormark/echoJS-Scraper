@@ -54,6 +54,6 @@ var  viewRoutes = require("./routes/view.js")
 app.use("/", viewRoutes);
 
 // Listen on port 8000
-app.listen(8000, function() {
-    console.log("App running on port 8000!");
+app.listen(8080, function() {
+    console.log("App running on port 8080!");
 });
