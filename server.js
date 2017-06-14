@@ -34,8 +34,8 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 
-if (process.env.MONGODB_URI) {
-    mongoose.connect(process.env.MONGODB_URI);
+if (process.env.MONGODB_URI​) {
+    mongoose.connect(process.env.MONGODB_URI​);
 } else {
     // Database configuration with mongoose
     mongoose.connect("mongodb://localhost/echojsdb");
@@ -58,7 +58,7 @@ app.use("/api", apiRoutes);
 var  viewRoutes = require("./routes/view.js")
 app.use("/", viewRoutes);
 
-var port = process.env.PORT || 8080; // trying this for heroku
-app.listen(port, function() {
-  console.log("App running on port 8080!");
+var PORT = process.env.PORT || 8080;
+app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
 });
