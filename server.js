@@ -5,12 +5,12 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 
 // Requiring our Note and Article models
-var Note = require("./models/Comment.js");
-var Article = require("./models/Article.js");
+// var Comment = require("./models/Comment.js");
+// var Article = require("./models/Article.js");
 
-// Our scraping tools
-var request = require("request");
-var cheerio = require("cheerio");
+// // Our scraping tools
+// var request = require("request");
+// var cheerio = require("cheerio");
 
 var exphbs = require("express-handlebars");
 
@@ -32,7 +32,6 @@ app.use(express.static("public"));
 // Set Handlebars.
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
-
 
 
 if (process.env.MONGODB_URI) {
