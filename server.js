@@ -4,14 +4,6 @@ var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 
-// Requiring our Note and Article models
-// var Comment = require("./models/Comment.js");
-// var Article = require("./models/Article.js");
-
-// // Our scraping tools
-// var request = require("request");
-// var cheerio = require("cheerio");
-
 var exphbs = require("express-handlebars");
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
@@ -33,12 +25,13 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-if (process.env.MONGODB_URI) {
-       mongoose.connect(process.env.MONGODB_URI);
-} else {
-    // Database configuration with mongoose
-    mongoose.connect("mongodb://localhost/echojsdb")
-}
+// for development
+// Database configuration with mongoose
+// mongoose.connect("mongodb://localhost/echojsdb")
+
+// for production:
+mongoose.connect('mongodb://heroku_89z4nsqp:ntu7cpskpk86q89kkkfd1a3lim@ds141108.mlab.com:41108/heroku_89z4nsqp');
+
 var db = mongoose.connection;
 
 // Show any mongoose errors
