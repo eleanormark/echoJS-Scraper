@@ -53,7 +53,7 @@ app.use("/api", apiRoutes);
 var  viewRoutes = require("./routes/view.js")
 app.use("/", viewRoutes);
 
-// Listen on port 8000
-app.listen(8080, function() {
-    console.log("App running on port 8080!");
+var port = process.env.PORT || 8080; // trying this for heroku
+app.listen(port, function() {
+  console.log("App running on port 8080!");
 });
