@@ -33,8 +33,14 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// Database configuration with mongoose
-mongoose.connect("mongodb://localhost/echojsdb");
+
+
+if (process.env.MONGODB_URI) {
+    mongoose.connect(process.env.MONGODB_URI);
+} else {
+    // Database configuration with mongoose
+    mongoose.connect("mongodb://localhost/echojsdb");
+}
 var db = mongoose.connection;
 
 // Show any mongoose errors
