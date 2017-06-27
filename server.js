@@ -27,10 +27,10 @@ app.set("view engine", "handlebars");
 
 // for development
 // Database configuration with mongoose
-// mongoose.connect("mongodb://localhost/echojsdb")
+// mongoose.connect("mongodb://localhost/echojsdb");
 
 // for production:
-mongoose.connect('mongodb://heroku_kc7x3c6k:cbme9i8l8d90shaj71ue79qce0@ds127492.mlab.com:27492/heroku_kc7x3c6k');
+mongoose.connect("mongodb://heroku_b07lx30s:igo2557l1uhig38omibfa5r9cf@ds141242.mlab.com:41242/heroku_b07lx30s");
 
 var db = mongoose.connection;
 
@@ -45,12 +45,10 @@ db.once("open", function() {
 });
 
 // Routes
-var  apiRoutes = require("./routes/api.js")
-app.use("/api", apiRoutes);
-var  viewRoutes = require("./routes/view.js")
-app.use("/", viewRoutes);
+app.use("/api", require("./routes/api"));
+app.use("/", require("./routes/view"));
 
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 8000;
 app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
+    console.log("App listening for requests on PORT " + PORT);
 });
