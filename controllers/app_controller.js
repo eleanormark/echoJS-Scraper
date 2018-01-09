@@ -31,22 +31,10 @@ var scrapeArticles = function(req, res) {
             if (result.title && result.link){
                 scrapedArticles.push(entry);
             }
-            // Now, save that entry to the db            
-            // entry.save(function(err, doc) {
-            //     // Log any errors
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     // Or log the doc
-            //     else {
-            //         console.log(doc);
-            //     }
-            // });
         });
            res.json(scrapedArticles);
     });
-    // Tell the browser that we finished scraping the text
-    // res.send("Scrape Completed.  Number of Article(s): ");
+    
 } 
 
 var postNewArticle = function(req, res) {
@@ -56,7 +44,6 @@ var postNewArticle = function(req, res) {
     // Add the text and href of every link, and save them as properties of the result object
     result.title = req.body.title;
     result.link = req.body.link;
-
 
     var entry = new Article(result);    
         entry.save(function(err, doc) {
@@ -69,7 +56,6 @@ var postNewArticle = function(req, res) {
             console.log(doc);
         }
     });
-
 }
 
 // Use in getting all the articles we scraped from the mongoDB
@@ -124,7 +110,6 @@ var postNewComment = function(req, res) {
     var newComment = new Comment(req.body);
 
     var articleId = req.body['_article'];
-    console.log("article =================");
     console.log(articleId);
     // And save the new comment the db
     newComment.save(function(error, doc) {
@@ -139,7 +124,6 @@ var postNewComment = function(req, res) {
             Article.update({ "_id": articleId  }, {$push: { "comments": newComment._id }}, function(err, result){
                 if(err) {
                 console.log(err);
-                console.log("err at comment arr==================");
                 }else {
                     res.json(newComment);
                     console.log("not showing error");
@@ -167,11 +151,9 @@ var  getComments = function (req, res) {
   var id = req.params.id;
   Promise.resolve(Article.findOne({_id: id}).populate('comments').exec())
   .then(function(doc) {
-    console.log("==================================found article is >>>>", doc);
     res.json(doc);
   })
   .catch(function (err) {
-    console.log(`===============================error geting that specific article, ${err}`);
     res.end(404);
   })
 }
