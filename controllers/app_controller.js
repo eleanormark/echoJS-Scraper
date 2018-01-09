@@ -118,7 +118,6 @@ var postNewComment = function(req, res) {
             console.lgo("post error");
             console.log(error);
         }
-        // Otherwise
         else {
             // Use the article id to find and update it's comment
             Article.update({ "_id": articleId  }, {$push: { "comments": newComment._id }}, function(err, result){
@@ -134,7 +133,6 @@ var postNewComment = function(req, res) {
 }
 
 // var getComments = function(req, res) {  
-//        console.log("====================get comments")
 //     var id = req.params.id;
  
 //     Article.findOne({_id: id}).populate('comments').exec(function (err, doc) {
